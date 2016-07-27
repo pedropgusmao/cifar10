@@ -43,10 +43,21 @@ local function createdataset(inputFnames, outputFname)
 	torch.save(outputFname, out)
 end
 
-local function downloaddataset() 
+local function checkifdatasetispresentotherwisedownloadit() 
 	local path         = paths.dirname( paths.thisfile() )
-	os.execute('wget -c http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz -P '.. path)
-	os.execute('tar -xvf cifar-10-binary.tar.gz -C' .. path)
+	local trainfile    = paths.concat(path, "cifar10-train.t7")
+	local testfile     = paths.concat(path, "cifar10-test.t7")
+	local alreadydownloaded = paths.filep(path, trainfile) and paths.filep(path, testfile)
+	if not alreadydownloaded then 
+		os.execute('wget -c http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz -P '.. path)
+		os.execute('tar -xvf '.. path .. '/cifar-10-binary.tar.gz -C' .. path)
+		createdataset({ paths.concat(path, 'cifar-10-batches-bin', 'data_batch_1.bin'),
+				paths.concat(path, 'cifar-10-batches-bin', 'data_batch_2.bin'),
+				paths.concat(path, 'cifar-10-batches-bin', 'data_batch_3.bin'),
+				paths.concat(path, 'cifar-10-batches-bin', 'data_batch_4.bin'),
+				paths.concat(path, 'cifar-10-batches-bin', 'data_batch_5.bin')}, trainfile)
+		createdataset({paths.concat(path, 'cifar-10-batches-bin', 'test_batch.bin')}, testfile)
+	end
 end
 
 local function loaddataset(filename)
@@ -62,25 +73,15 @@ end
 function cifar10.traindataset()
 	local path 	   = paths.dirname( paths.thisfile() )
 	local trainfile = paths.concat(path, "cifar10-train.t7")
-	if not paths.filep(path, trainfile) then
-		downloaddataset()
-		createdataset({paths.concat(path, 'data_batch_1.bin'),
-		paths.concat(path, 'data_batch_2.bin'),
-		paths.concat(path, 'data_batch_3.bin'),
-		paths.concat(path, 'data_batch_4.bin'),
-		paths.concat(path, 'data_batch_5.bin')}, trainfile)
-	end
+	checkifdatasetispresentotherwisedownloadit() 
 	return loaddataset(trainfile)
 end
 
 function cifar10.testdataset()
 	local path 	   = paths.dirname( paths.thisfile() )
-	local testfile  = paths.concat(path, "cifar10-test.t7")
-	if not paths.filep(path, testfile) then 
-		createdataset({paths.concat(path, 'data/test_batch.bin')}, testfile)
-	end
+	local testfile     = paths.concat(path, "cifar10-test.t7")
+	checkifdatasetispresentotherwisedownloadit() 
 	return loaddataset(testfile)
-
 end
 
 return cifar10
