@@ -23,15 +23,4 @@ build = {
 	modules = {
 		["cifar10.init"] = "init.lua"
 	},
-
-	install = {
-		lua = {
-			["cifar10.data.data_batch_1.bin"] = "data/data_batch_1.bin",
-			["cifar10.data.data_batch_2.bin"] = "data/data_batch_2.bin",
-			["cifar10.data.data_batch_3.bin"] = "data/data_batch_3.bin",
-			["cifar10.data.data_batch_4.bin"] = "data/data_batch_4.bin",
-			["cifar10.data.data_batch_5.bin"] = "data/data_batch_5.bin",
-			["cifar10.data.test_batch.bin"] = "data/test_batch.bin",
-		}
-	}
 }

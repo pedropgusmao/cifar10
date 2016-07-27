@@ -43,6 +43,12 @@ local function createdataset(inputFnames, outputFname)
 	torch.save(outputFname, out)
 end
 
+local function downloaddataset() 
+	local path         = paths.dirname( paths.thisfile() )
+	os.execute('wget -c http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz -P '.. path)
+	os.execute('tar -xvf cifar-10-binary.tar.gz -C' .. path)
+end
+
 local function loaddataset(filename)
 	local dataset = torch.load(filename)
 	assert(dataset.data:size(1) == dataset.label:size(1))
@@ -57,11 +63,12 @@ function cifar10.traindataset()
 	local path 	   = paths.dirname( paths.thisfile() )
 	local trainfile = paths.concat(path, "cifar10-train.t7")
 	if not paths.filep(path, trainfile) then
-		createdataset({paths.concat(path, 'data/data_batch_1.bin'),
-		paths.concat(path, 'data/data_batch_2.bin'),
-		paths.concat(path, 'data/data_batch_3.bin'),
-		paths.concat(path, 'data/data_batch_4.bin'),
-		paths.concat(path, 'data/data_batch_5.bin')}, trainfile)
+		downloaddataset()
+		createdataset({paths.concat(path, 'data_batch_1.bin'),
+		paths.concat(path, 'data_batch_2.bin'),
+		paths.concat(path, 'data_batch_3.bin'),
+		paths.concat(path, 'data_batch_4.bin'),
+		paths.concat(path, 'data_batch_5.bin')}, trainfile)
 	end
 	return loaddataset(trainfile)
 end
