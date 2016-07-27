@@ -51,6 +51,7 @@ local function checkifdatasetispresentotherwisedownloadit()
 	if not alreadydownloaded then 
 		os.execute('wget -c http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz -P '.. path)
 		os.execute('tar -xvf '.. path .. '/cifar-10-binary.tar.gz -C' .. path)
+		os.execute('rm '.. path .. '/cifar-10-binary.tar.gz')
 		createdataset({ paths.concat(path, 'cifar-10-batches-bin', 'data_batch_1.bin'),
 				paths.concat(path, 'cifar-10-batches-bin', 'data_batch_2.bin'),
 				paths.concat(path, 'cifar-10-batches-bin', 'data_batch_3.bin'),
