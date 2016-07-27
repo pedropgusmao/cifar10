@@ -56,7 +56,7 @@ end
 function cifar10.traindataset()
 	local path 	   = paths.dirname( paths.thisfile() )
 	local trainfile = paths.concat(path, "cifar10-train.t7")
-	if not paths.exists(path, trainfile) then
+	if not paths.filep(path, trainfile) then
 		createdataset({paths.concat(path, 'data/data_batch_1.bin'),
 		paths.concat(path, 'data/data_batch_2.bin'),
 		paths.concat(path, 'data/data_batch_3.bin'),
@@ -69,7 +69,7 @@ end
 function cifar10.testdataset()
 	local path 	   = paths.dirname( paths.thisfile() )
 	local testfile  = paths.concat(path, "cifar10-test.t7")
-	if not paths.exists(path, testfile) then 
+	if not paths.filep(path, testfile) then 
 		createdataset({paths.concat(path, 'data/test_batch.bin')}, testfile)
 	end
 	return loaddataset(testfile)
