@@ -45,8 +45,8 @@ end
 
 local function checkifdatasetispresentotherwisedownloadit() 
 	local path         = paths.dirname( paths.thisfile() )
-	local trainfile    = paths.concat("cifar10-train.t7")
-	local testfile     = paths.concat("cifar10-test.t7")
+	local trainfile    = paths.concat( path, "cifar10-train.t7")
+	local testfile     = paths.concat( path, "cifar10-test.t7")
 	local alreadydownloaded = paths.filep(trainfile) and paths.filep(testfile)
 	if not alreadydownloaded then 
 		os.execute('wget -c http://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz -P '.. path)
