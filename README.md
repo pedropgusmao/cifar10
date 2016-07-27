@@ -5,7 +5,7 @@ If you want to know more about the CIFAR-10 dataset, including how to properly c
 
 ## Installation ##
 
-torch-rocks install https://raw.github.com/pedropgusmao/cifar10/master/rocks/cifar10-scm-1.rockspec
+luarocks install https://raw.github.com/pedropgusmao/cifar10/master/rocks/cifar10-scm-1.rockspec
 
 ## Usage ##
 ```lua
